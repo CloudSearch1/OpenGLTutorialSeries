@@ -1,7 +1,6 @@
 workspace "OpenGLTourial"
-	startproject "Sandbox"
+	startproject "OpenGLTourial"
 	architecture "x64"
-
 
 	configurations
 	{
@@ -14,19 +13,19 @@ outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 
 -- Include dirs relative to root folder (solution dir)
 IncludeDir = {}
-IncludeDir["GLFW"] = "OpenGLTourial/vendor/GLFW/include"
 IncludeDir["Glad"] = "OpenGLTourial/vendor/Glad/include"
+IncludeDir["GLFW"] = "OpenGLTourial/vendor/GLFW/include"
 IncludeDir["glm"] = "OpenGLTourial/vendor/glm"
 
-group "Dependencies"
-	include "OpenGLTourial/vendor/GLFW"
-	include "OpenGLTourial/vendor/Glad"
 
+group "Dependencies"
+	include "OpenGLTourial/vendor/Glad"
+	include "OpenGLTourial/vendor/GLFW"
 group ""
 
 project "OpenGLTourial"
 	location "OpenGLTourial"
-	kind "StaticLib"
+	kind "ConsoleApp"
 	cppdialect "C++17"
 	language "C++"
 	staticruntime "on"
@@ -82,53 +81,3 @@ project "OpenGLTourial"
 		buildoptions"/MD"
 		optimize "on" 
 
-project"Sandbox"
-	location"Sandbox"
-	kind "ConsoleApp"
-	language "C++"
-	cppdialect "C++17"
-	staticruntime"on"
-
-	targetdir ("bin/" .. outputdir .. "/%{prj.name}")
-	objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
-
-	files{
-		"%{prj.name}/src/**.h",
-		"%{prj.name}/src/**.cpp"
-		
-	}
-
-	includedirs{
-		"OpenGLTourial/src",
-		"OpenGLTourial/vendor",
-		"%{IncludeDir.glm}"
-	}
-
-	links{
-		"OpenGLTourial"
-	}
-
-	filter "system:windows"
-	
-		staticruntime "On"
-		systemversion "latest"
-		
-		defines
-		{
-			"OT_PLATFORM_WINDOWS"
-		}
-		
-	filter "configurations:Debug"
-		defines "OT_DEBUG"
-		buildoptions"/MDd"
-		symbols "on"
-
-	filter "configurations:Release"
-		defines "OT_RELEASE"
-		buildoptions"/MD"
-		optimize "on"
-
-	filter "configurations:Dist"
-		defines "OT_DIST"
-		buildoptions"/MD"
-		optimize "on"
